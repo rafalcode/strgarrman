@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
 
    /* declarations */
    int i, j, n=atoi(argv[1]) /* total range */, nr=atoi(argv[2]) /* number of randnums */;
-   int partcsz=nr%64; /* size of the partial container */
-   int basz=nr/64;
+   int partcsz=n%64; /* size of the partial container */
+   int basz=n/64;
    unsigned long *mask=calloc(basz+1, sizeof(unsigned long));
 
     int rn, frn, prn;

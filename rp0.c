@@ -12,14 +12,24 @@ int main(int argc, char *argv[])
 	}
 
    /* declarations */
-   int i, j, n=atoi(argv[1]) /* total range */, nr=atoi(argv[2]) /* number of randnums */;
+   int i, j, k, n=atoi(argv[1]) /* total range */, nr=atoi(argv[2]) /* number of randnums */;
    int partcsz=n%64; /* size of the partial container */
    int basz=n/64;
    unsigned long *mask=calloc(basz+1, sizeof(unsigned long));
 
-    int rn, frn, prn;
-    for(i=0;i<nr;++i) {
-        rn=(int)(n*(float)rand()/RAND_MAX);
+   unsigned *nra=malloc(nr, sizeof(unsigned));
+
+    int rn, frn, prn, totrs;
+
+    totrs=nr; /* to start off with */
+
+//    for(k=0;k<totrs;++k) {
+    for(;;) {
+
+    for(i=0;i<rn;++i)
+        rna[i]=(int)(n*(float)rand()/RAND_MAX);
+
+    for(i=0;i<rn;++i) {
         fn=rn/64;
         pn=rn%64;
         if(mask[fn]&(1UL<<pn)) /* already set? */
@@ -40,5 +50,6 @@ int main(int argc, char *argv[])
    printf("rn was %d\n", rn); 
 
    free(mask);
+   free(rna);
    return 0;
 }

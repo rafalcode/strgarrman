@@ -1,3 +1,5 @@
+/* uses mask to group strings into some sort of criteria... the use of multi-long mask
+ * is quite nice .. but the needs a 2-D array to group things nicely */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,21 +52,24 @@ void matchme(int wordc, char *words[])
     /* we use a mask to avoid mark off positions that have already matched */
     int basz=wordc/64;
     unsigned long *mask=calloc(basz+1, sizeof(unsigned long));
+    int runningtot;
 
     int i, j, pn, fn;
     for(i=0;i<wordc ;++i) {
         fn=i/64;
         pn=i%64;
-        if(mask[fn]&(1UL<<pn)) /* already set? */
+        if(mask[fn]&(1UL<<pn)) /* already set? i.e. this strg has already been picked up another, has a match with another */
             continue;
-        mask[fn]|=(1UL<<(pn)); /* set the bit for this number */
+        mask[fn]|=(1UL<<(pn)); /* so it's going to be checked now, let's set its bit */
+        runningtot=0;
         for(j=i+1;j<wordc;++j) {
             if(mask[j/64]&(1UL<<(j%64))) /* already set? */
                 continue;
-            printf("%s/%s: %d ", words[i], words[j], coabs(words[i], words[j])); /* just printout comparison going on */
-            if(coabs(words[i], words[j])) {
+            printf("%s/%s: %d ", words[i], words[j], cofirst(words[i], words[j])); /* just printout comparison going on */
+            if(cofirst(words[i], words[j])) {
                 matcha[j]=i;
                 mask[j/64]|=(1UL<<(j%64)); /* set the bit for this number */
+                runningtot++;
             } else
                 matcha[j]=j;
         }
